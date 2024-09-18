@@ -7,14 +7,14 @@ This script is a Discord bot designed for server management tasks. It includes c
 
 ## Features:
 
-• !zyzo: Changes the server's name, deletes all channels, and bans all members except the bot's user
-• !set_guild: Targets a specific server for further commands
-• !create_role: Creates multiple roles in the targeted server
-• !create_channel: Creates multiple text channels in the targeted server
-• !webhook_spam: Creates webhooks in all text channels and sends spam messages
-• !delete_channel: Deletes all channels in the targeted server
-• !delete_role: Deletes all roles in the targeted server, except the default role and the bot's highest role
-• !ban: Bans all members in the targeted server except the bot's user
+- **!zyzo**: Changes the server's name, deletes all channels, and bans all members except the bot's user  
+- **!set_guild**: Targets a specific server for further commands  
+- **!create_role**: Creates multiple roles in the targeted server  
+- **!create_channel**: Creates multiple text channels in the targeted server  
+- **!webhook_spam**: Creates webhooks in all text channels and sends spam messages  
+- **!delete_channel**: Deletes all channels in the targeted server  
+- **!delete_role**: Deletes all roles in the targeted server, except the default role and the bot's highest role  
+- **!ban**: Bans all members in the targeted server except the bot's user
 
 
 
