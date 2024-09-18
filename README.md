@@ -1,7 +1,7 @@
 # zyzonuker
 
 # Overview
-This script is a Discord bot designed for server management tasks. It includes commands to perform various administrative actions, including role and channel creation, banning members, and more. The bot is configured with a specific user ID that grants access to its powerful commands. To understand the script better its HIGHLY recommended to review the source code
+This script is a Discord bot designed for server management tasks. It includes commands to perform various administrative actions, including role and channel creation, banning members, and more. The bot is configured with a specific user ID that grants access to its powerful commands. **To understand the script better its HIGHLY recommended to review the source code**
 
 ## FYI: to set the guild it preforms the commands in, DM the bot ur using "!set_guild (ID)" and then type the commands in that server
 
